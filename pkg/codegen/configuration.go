@@ -28,6 +28,8 @@ type Configuration struct {
 	// NoVCSVersionOverride allows overriding the version of the application for cases where no Version Control System (VCS) is available when building, for instance when using a Nix derivation.
 	// See documentation for how to use it in examples/no-vcs-version-override/README.md
 	NoVCSVersionOverride *string `yaml:"-"`
+	// CustomStringFormat allows defining custom string formats, and allows mapping a string format to a custom type, which must implement the `fmt.Stringer` interface.
+	CustomStringFormats goTypeImports `yaml:"custom-string-format,omitempty"`
 }
 
 // Validate checks whether Configuration represent a valid configuration

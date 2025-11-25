@@ -668,8 +668,14 @@ func oapiSchemaToGoType(schema *openapi3.Schema, path []string, outSchema *Schem
 		case "binary":
 			outSchema.GoType = "openapi_types.File"
 		default:
-			// All unrecognized formats are simply a regular string.
-			outSchema.GoType = "string"
+
+			if customFormat, ok := globalState.options.CustomStringFormats[f]; ok {
+				outSchema.GoType = customFormat.TypeName
+				// outSchema.RefType
+			} else {
+				// All unrecognized formats are simply a regular string.
+				outSchema.GoType = "string"
+			}
 		}
 		outSchema.DefineViaAlias = true
 	} else {

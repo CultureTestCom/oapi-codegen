@@ -1,0 +1,48 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Example with x-go-type-skip-optional-pointer
+paths:
+  /check:
+    post:
+      summary: Return example
+      parameters:
+        - name: customStringFormat
+          in: query
+          required: true
+          schema:
+            type: string
+            format: customStringFormat
+        - name: test
+          in: query
+          required: true
+          schema:
+            type: boolean
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExampleRequest"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExampleResponse"
+components:
+  schemas:
+    ExampleRequest:
+      type: object
+      properties:
+        customStringFormat:
+          type: string
+          format: customStringFormat
+
+    ExampleResponse:
+      type: object
+      properties:
+        customStringFormat:
+          type: string
+          format: customStringFormat

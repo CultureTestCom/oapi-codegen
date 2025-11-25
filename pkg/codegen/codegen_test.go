@@ -227,5 +227,48 @@ func (t *ExampleSchema_Item) FromExternalRef0NewPet(v externalRef0.NewPet) error
 `)
 }
 
+func TestCustomStringFormats(t *testing.T) {
+	packageName := "api"
+	opts := Configuration{
+		PackageName: packageName,
+		Generate: GenerateOptions{
+			GorillaServer: true,
+			Models:        true,
+			EmbeddedSpec:  true,
+			Strict:        true,
+		},
+		CustomStringFormats: goTypeImports{
+			"customStringFormat": {
+				goImport: goImport{
+					Path: "example.com/pkg/customstringformat",
+				},
+				TypeName: "customstringformat.Format",
+			},
+		},
+	}
+
+	spec := "test_specs/custom-string-formats.yaml"
+	swagger, err := util.LoadSwagger(spec)
+	require.NoError(t, err)
+
+	// Run our code generation:
+	code, err := Generate(swagger, opts)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, code)
+
+	// Check that we have valid (formattable) code:
+	_, err = format.Source([]byte(code))
+	assert.NoError(t, err)
+
+	imports := []string{
+		`example.com/pkg/customstringformat`, // custom string format
+	}
+
+	// Check import
+	for _, imp := range imports {
+		assert.Contains(t, code, imp)
+	}
+}
+
 //go:embed test_spec.yaml
 var testOpenAPIDefinition string

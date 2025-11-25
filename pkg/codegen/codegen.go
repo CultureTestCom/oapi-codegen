@@ -88,6 +88,21 @@ func (im importMap) GoImports() []string {
 	return goImports
 }
 
+type goTypeImport struct {
+	goImport
+	TypeName string
+}
+
+type goTypeImports map[string]goTypeImport
+
+func (gti goTypeImports) GoImports() []string {
+	goImports := make([]string, 0, len(gti))
+	for _, v := range gti {
+		goImports = append(goImports, v.goImport.String())
+	}
+	return goImports
+}
+
 func constructImportMapping(importMapping map[string]string) importMap {
 	var (
 		pathToName = map[string]string{}
@@ -316,6 +331,8 @@ func Generate(spec *openapi3.T, opts Configuration) (string, error) {
 	w := bufio.NewWriter(&buf)
 
 	externalImports := append(globalState.importMapping.GoImports(), importMap(xGoTypeImports).GoImports()...)
+	externalImports = append(externalImports, opts.CustomStringFormats.GoImports()...)
+
 	importsOut, err := GenerateImports(
 		t,
 		externalImports,
