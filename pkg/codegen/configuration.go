@@ -29,7 +29,7 @@ type Configuration struct {
 	// See documentation for how to use it in examples/no-vcs-version-override/README.md
 	NoVCSVersionOverride *string `yaml:"-"`
 	// CustomStringFormat allows defining custom string formats, and allows mapping a string format to a custom type, which must implement the `fmt.Stringer` interface.
-	CustomStringFormats goTypeImports `yaml:"custom-string-format,omitempty"`
+	CustomStringFormats goTypeImports `yaml:"custom-string-formats,omitempty"`
 }
 
 // Validate checks whether Configuration represent a valid configuration

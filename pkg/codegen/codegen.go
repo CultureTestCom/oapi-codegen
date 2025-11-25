@@ -88,13 +88,13 @@ func (im importMap) GoImports() []string {
 	return goImports
 }
 
-type goTypeImport struct {
+type GoTypeImport struct {
 	TypeName string `yaml:"type-name"`
 	Path     string `yaml:"path"`
 	Name     string `yaml:"name"`
 }
 
-type goTypeImports map[string]goTypeImport
+type goTypeImports map[string]GoTypeImport
 
 func (gti goTypeImports) GoImports() []string {
 	goImports := make([]string, 0, len(gti))
