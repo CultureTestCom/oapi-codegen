@@ -239,9 +239,7 @@ func TestCustomStringFormats(t *testing.T) {
 		},
 		CustomStringFormats: goTypeImports{
 			"customStringFormat": {
-				goImport: goImport{
-					Path: "example.com/pkg/customstringformat",
-				},
+				Path:     "example.com/pkg/customstringformat",
 				TypeName: "customstringformat.Format",
 			},
 		},

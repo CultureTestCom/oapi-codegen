@@ -650,6 +650,7 @@ func oapiSchemaToGoType(schema *openapi3.Schema, path []string, outSchema *Schem
 		outSchema.DefineViaAlias = true
 	} else if t.Is("string") {
 		// Special case string formats here.
+
 		switch f {
 		case "byte":
 			outSchema.GoType = "[]byte"
@@ -671,7 +672,6 @@ func oapiSchemaToGoType(schema *openapi3.Schema, path []string, outSchema *Schem
 
 			if customFormat, ok := globalState.options.CustomStringFormats[f]; ok {
 				outSchema.GoType = customFormat.TypeName
-				// outSchema.RefType
 			} else {
 				// All unrecognized formats are simply a regular string.
 				outSchema.GoType = "string"
