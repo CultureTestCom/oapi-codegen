@@ -104,8 +104,9 @@ func (gti goTypeImports) GoImports() []string {
 	return goImports
 }
 
-func ConstructImportMapping(importMapping map[string]string) importMap {
-	return constructImportMapping(importMapping)
+func ConstructAndSetImportMapping(importMapping map[string]string) importMap {
+	globalState.importMapping = constructImportMapping(importMapping)
+	return globalState.importMapping
 }
 func constructImportMapping(importMapping map[string]string) importMap {
 	var (
