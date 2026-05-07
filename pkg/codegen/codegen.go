@@ -121,10 +121,20 @@ func constructImportMapping(importMapping map[string]string) importMap {
 		}
 		sort.Strings(packagePaths)
 
+		usedAliases := map[string]bool{}
 		for _, packagePath := range packagePaths {
-			if _, ok := pathToName[packagePath]; !ok && packagePath != importMappingCurrentPackage {
-				pathToName[packagePath] = fmt.Sprintf("externalRef%d", len(pathToName))
+			if _, ok := pathToName[packagePath]; ok || packagePath == importMappingCurrentPackage {
+				continue
 			}
+			parts := strings.Split(packagePath, "/")
+			alias := parts[len(parts)-1]
+			// If two import paths end in the same segment (rare), fall back to
+			// the externalRef%d numbering to keep aliases unique.
+			if usedAliases[alias] {
+				alias = fmt.Sprintf("externalRef%d", len(pathToName))
+			}
+			usedAliases[alias] = true
+			pathToName[packagePath] = alias
 		}
 	}
 	for specPath, packagePath := range importMapping {
